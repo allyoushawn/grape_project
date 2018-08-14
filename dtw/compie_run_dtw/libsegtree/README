@@ -1,0 +1,14 @@
+If you cannot find boost/heap library, please download
+boost.1.50.0 (or later) from
+http://sourceforge.net/projects/boost/files/boost/1.50.0/boost_1_50_0.tar.gz/download
+
+If you are an administrator:
+Download it and put it in /usr/local/include/boost_1_50_0
+Create a soft link
+(ln -s /usr/local/include/boost_1_50_0/boost /usr/local/include/)
+Then make again.
+
+If you are not a ministrator:
+Download the file and put it in some directory
+Modify the Makefile so -I redirect to /SOMEWHERE/boost_1_50_0/boost/
+Then make again.
