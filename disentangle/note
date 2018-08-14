@@ -1,0 +1,12 @@
+make_feats: kaldi ark -> feat format
+split_data.py
+train.sh (no GANspk for original seq2seq)
+
+[testing]
+make_feats
+split_all_data.py
+test.sh  #the batch_size has to be divided by the number of words
+gen_pkl_embed.py
+
+
+filter seq_len -> get_feat.py
