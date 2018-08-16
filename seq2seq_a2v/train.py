@@ -63,6 +63,7 @@ def gen_std_embed_pkl(model, sess, batch_size,
         embed_num_list = [1] * len(embed_arr)
 
     idx = 0
+    assert(sum(embed_num_list) == embed_arr.shape[0])
     for num in embed_num_list:
         embedding.append(embed_arr[idx:idx + num])
         idx += num

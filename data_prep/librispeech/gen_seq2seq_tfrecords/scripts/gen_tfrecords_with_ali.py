@@ -64,7 +64,7 @@ def gen_bnd_seq_with_ctm(uttid, bnd_sequence, ctm_fp=None):
     return bnd_sequence, None, None
 
 
-def split_utterance_into_words_write_into_tfrecords(feats_sequence, bnd_sequence, len_limit, writer, gen_embed_num_file_f):
+def split_utterance_into_words_write_into_tfrecords(feats_sequence, bnd_sequence, len_limit, writer, gen_embed_num_file_f, train_flag):
 
     counter = 0
     if len(bnd_sequence) <= 1:
@@ -85,8 +85,12 @@ def split_utterance_into_words_write_into_tfrecords(feats_sequence, bnd_sequence
 
             if len(feats_sequence[start_idx:bnd]) == 0: pdb.set_trace()
 
-            # Filter out too short length
-            if bnd - start_idx > 40:
+            # Filter out too short length for train
+            if train_flag == True:
+                if bnd - start_idx > 40:
+                    ex = make_example(feats_sequence[start_idx: bnd])
+                    writer.write(ex.SerializeToString())
+            else:
                 ex = make_example(feats_sequence[start_idx: bnd])
                 writer.write(ex.SerializeToString())
 
@@ -113,6 +117,7 @@ if __name__ == '__main__':
     tfrecords_filename = sys.argv[2]
     ctm_file = sys.argv[3]
     gen_embed_num_file_f = open('embed_num', 'w')
+    train_flag = ('train' in scp_file.split('/')[-1])
 
     '''
     scp_file = 'feat_scp/test.39.cmvn.scp'
@@ -185,7 +190,7 @@ if __name__ == '__main__':
             writer.write(ex.SerializeToString())
             '''
             if len(feats_sequence) > 0:
-                split_utterance_into_words_write_into_tfrecords(feats_sequence, bnd_sequence, len_limit, writer, gen_embed_num_file_f)
+                split_utterance_into_words_write_into_tfrecords(feats_sequence, bnd_sequence, len_limit, writer, gen_embed_num_file_f, train_flag)
             feats_sequence = []
             uttid = next_uttid
             bnd_sequence = next_bnd_sequence
