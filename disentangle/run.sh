@@ -6,7 +6,8 @@ if [ "$#" -ne 1 ]; then
     echo "<type> should be either 'train' or 'eval'"
     exit 0
 fi
-exp_dir=/home/allyoushawn/exps/oracle_ali
+exp_dir=/home/allyoushawn/exps/ssae_ali
+ali_dir=alignments/oracle_ali
 lr=0.0005
 p_hid_dim=128
 s_hid_dim=128
@@ -23,7 +24,7 @@ if [ $1 == "train" ]; then
     # Features
     echo "Preparing features"
     ark=$kaldi_feat_loc/train.39.cmvn.ark
-    ali=alignments/oracle_ali/train.ali
+    ali=$ali_dir/train.ali
     op_feat_dir=$feat_loc/train_feats
     ./make_feats.sh $ark $ali $op_feat_dir
 
@@ -51,7 +52,7 @@ if [ $1 == "eval" ]; then
 
     echo "Preparing features for query.dev"
     ark=$kaldi_feat_loc/query.dev.39.cmvn.ark
-    ali=alignments/oracle_ali/query.dev.ali
+    ali=$ali_dir/query.dev.ali
     op_feat_dir=$feat_loc/query_dev_feats
     ./make_feats.sh $ark $ali $op_feat_dir
     echo "Split data for dev query"
@@ -67,7 +68,7 @@ if [ $1 == "eval" ]; then
 
     echo "Preparing features for test set (doc)"
     ark=$kaldi_feat_loc/test.39.cmvn.ark
-    ali=alignments/oracle_ali/test.ali
+    ali=$ali_dir/test.ali
     op_feat_dir=$feat_loc/test_feats
     ./make_feats.sh $ark $ali $op_feat_dir
 
