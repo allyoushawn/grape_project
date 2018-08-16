@@ -1,7 +1,7 @@
 #!/bin/bash
 . setup.sh
 
-exp_dir=/home/allyoushawn/exps/journal_exps/disentangle_exp/ssae_ali
+exp_dir=/home/allyoushawn/exps/oracle_ali
 lr=0.0005
 p_hid_dim=128
 s_hid_dim=128
@@ -17,14 +17,14 @@ feat_dim=39
 # Features
 echo "Preparing features"
 ark=$kaldi_feat_loc/train.39.cmvn.ark
-ali=../ssae_ali/train.ali
+ali=alignments/oracle_ali/train.ali
 op_feat_dir=$feat_loc/train_feats
 ./make_feats.sh $ark $ali $op_feat_dir
 
 # Split data
 echo "Split data"
 #spk_num=$(ls ${op_feat_dir}/${seq_len}/ | wc -l)
-spk_num=60
+spk_num=120
 proportion=0.8
 
 ./split_data.py $op_feat_dir $seq_len $spk_num $proportion
@@ -43,7 +43,7 @@ exit 0
 
 echo "Preparing features for query.dev"
 ark=$kaldi_feat_loc/query.dev.39.cmvn.ark
-ali=../ssae_ali/query.dev.ali
+ali=alignments/oracle_ali/query.dev.ali
 op_feat_dir=$feat_loc/query_dev_feats
 ./make_feats.sh $ark $ali $op_feat_dir
 echo "Split data for dev query"
@@ -59,7 +59,7 @@ echo "Generate embed pkl for query.dev"
 
 echo "Preparing features for test set (doc)"
 ark=$kaldi_feat_loc/test.39.cmvn.ark
-ali=../ssae_ali/test.ali
+ali=alignments/oracle_ali/test.ali
 op_feat_dir=$feat_loc/test_feats
 ./make_feats.sh $ark $ali $op_feat_dir
 

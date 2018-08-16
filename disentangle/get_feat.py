@@ -3,6 +3,7 @@ import re
 import os 
 import argparse
 from collections import deque
+import pdb
 
 FLAG = None
 def read_classify_list(filename):
@@ -25,9 +26,9 @@ def mkdir(frame_num_list, path):
             os.mkdir(path+'/'+str(i))
     return 
 
-def classify(frame_num, frame_num_list):
+def classify(frame_num, frame_num_list, train_flag):
     # Filtering too short sequences (less than 40 frames)
-    if frame_num < 40:
+    if train_flag == True and frame_num < 40:
         return None
 
     for i in range(len(frame_num_list)):
@@ -45,6 +46,7 @@ def read_and_save_feat(prons, filename, classify_dic, frame_num_list, path, feat
     for i in frame_num_list:
         counter_dic[i] = 0
     filtered_lines = []
+    train_flag = ('train' in filename.split('/')[-1])
     with open(filename,'r') as f:
         line_id = 0
         for line in f:
@@ -67,7 +69,7 @@ def read_and_save_feat(prons, filename, classify_dic, frame_num_list, path, feat
                 if ID not in classify_dic:
                     continue
                 for start, cont in classify_dic[ID]:
-                    cls = classify(int(cont),frame_num_list)
+                    cls = classify(int(cont),frame_num_list, train_flag)
                     if cls == None:
                         line_id += 1
                         continue

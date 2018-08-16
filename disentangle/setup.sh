@@ -18,5 +18,5 @@ PATH=$kaldi_src/nnetbin/:$PATH
 export PATH=$PATH
 
 export seq_len=100
-export feat_loc=/home/allyoushawn/features/journal/disentangle/ssae_seg
+export feat_loc=/home/allyoushawn/features/journal/disentangle/oracle_seg
 export kaldi_feat_loc=/home/allyoushawn/features/librispeech_feats
