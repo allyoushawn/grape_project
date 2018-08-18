@@ -7,11 +7,11 @@ op_feats_dir=$3
 [ -f $feat_ark ] || exit 1
 [ -f $prons ] || exit 1
 
-mkdir -p $op_feats_dir
+mkdir -p $op_feats_dir/$seq_len
 
 rm -f $op_feats_dir/$seq_len/*
 
-python3 get_feat.py $prons $feat_ark $op_feats_dir
+python3 get_feat.py $prons $feat_ark $op_feats_dir $seq_len
 
 #if [ ! -f $feats_dir/extracted ]; then
 #  [ -f $feats_dir ] && rm -rf $feats_dir

@@ -17,6 +17,8 @@ PATH=$kaldi_src/latbin/:$PATH
 PATH=$kaldi_src/nnetbin/:$PATH
 export PATH=$PATH
 
-export seq_len=100
+# Use the following command to show the longest length of the alignments
+#cat alignments/ssae_ali/test.ali | sort -V -k 3 | tail
+export seq_len=600
 export feat_loc=/home/allyoushawn/features/journal/disentangle/ssae_ali_seg
 export kaldi_feat_loc=/home/allyoushawn/features/librispeech_feats

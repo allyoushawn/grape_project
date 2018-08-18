@@ -53,7 +53,7 @@ def read_and_save_feat(prons, filename, classify_dic, frame_num_list, path, feat
             if '[' in line:
                 # print (line_id)
                 ID = line.strip().split(' ')[0]
-                
+
                 ### temp_list contains all the utterance feature ###
                 temp_list = []
                 for lines in f:
@@ -94,7 +94,7 @@ def read_and_save_feat(prons, filename, classify_dic, frame_num_list, path, feat
                     np_new_frames = np.reshape(np.array(new_frames),-1)
                     np_new_frames = np.append(np_new_frames,[ID])
                     #print (np_new_frames[0])
-                    
+
                     # with open(path+'/'+str(cls)+'/'+str(int(counter_dic[cls]/FLAG.num_in_ark)) + '.ark','a') as csvfile:
                     with open(path+'/'+str(cls)+'/'+ID.split('-')[0] + '.ark','a') as csvfile:
                         counter_dic[cls] += 1
@@ -104,7 +104,6 @@ def read_and_save_feat(prons, filename, classify_dic, frame_num_list, path, feat
                                 csvfile.write(str(np_new_frames[i])+',')
                             else:
                                 csvfile.write(str(np_new_frames[i])+'\n')
-
     # with open(prons, 'r') as fin:
         # with open(filtered_prons, 'w') as fout:
             # count = 0
@@ -121,8 +120,8 @@ def read_and_save_feat(prons, filename, classify_dic, frame_num_list, path, feat
                     # count += 1
 
 def main():
-    
-    classify_list = [100]
+
+    classify_list = [FLAG.seq_len]
     path=FLAG.store_path
     mkdir(classify_list, path)
     classify_dic = read_classify_list(FLAG.prons)
@@ -138,6 +137,8 @@ if __name__ == "__main__":
         help='the feat ark')
     parser.add_argument('store_path',
         help='the directory to store the feat arks.')
+    parser.add_argument('seq_len',type=int,
+        help='the seq len limit.')
     parser.add_argument('--feat_dim', type=int,
         default=39,
         help='the feat dimension, default=39')

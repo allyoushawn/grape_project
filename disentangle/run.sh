@@ -6,8 +6,8 @@ if [ "$#" -ne 1 ]; then
     echo "<type> should be either 'train' or 'eval'"
     exit 0
 fi
-exp_dir=/home/allyoushawn/exps/ssae_ali
-ali_dir=alignments/oracle_ali
+exp_dir=/home/allyoushawn/exps/disentangle_exp/ssae_ali
+ali_dir=alignments/ssae_ali
 lr=0.0005
 p_hid_dim=128
 s_hid_dim=128
