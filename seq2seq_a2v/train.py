@@ -175,7 +175,6 @@ if __name__ == '__main__':
 
             train_writer.add_summary(
               model.tensorboard_summary(X, X, utt_mask), step)
-            break
 
 
         if epoch % 5 == 0:
