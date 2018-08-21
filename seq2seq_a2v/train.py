@@ -31,6 +31,8 @@ def gen_std_embed_pkl(model, sess, batch_size,
                       iterator, data, output_pkl_name, embed_num_list=None):
     sess.run(iterator.initializer)
     embedding = []
+    re_loss_list = []
+    utt_num = []
     init = True
     while True:
         try:
@@ -48,10 +50,13 @@ def gen_std_embed_pkl(model, sess, batch_size,
             input_X = X
             utt_mask = np.ones((len(X)))
 
-        [rnn_code] = model.get_tensor_val(
-            ['std_rnn_code'], input_X, input_X, utt_mask)
+        [rnn_code, re_loss] = model.get_tensor_val(
+            ['std_rnn_code', 'std_seq2seq_re_loss'], 
+            input_X, input_X, utt_mask)
 
         rnn_code = rnn_code[:len(X), :]
+        re_loss_list.append(re_loss)
+        utt_num.append(len(X))
 
         if init == True:
             embed_arr = rnn_code
@@ -69,6 +74,11 @@ def gen_std_embed_pkl(model, sess, batch_size,
         idx += num
     with open(output_pkl_name, 'wb') as fp:
         pickle.dump(embedding, fp)
+
+    re_loss = 0.
+    for i in range(len(re_loss_list)):
+        re_loss += re_loss_list[i] * utt_num[i] / sum(utt_num)
+    return re_loss
 
 
 
@@ -165,6 +175,7 @@ if __name__ == '__main__':
 
             train_writer.add_summary(
               model.tensorboard_summary(X, X, utt_mask), step)
+            break
 
 
         if epoch % 5 == 0:
@@ -178,16 +189,20 @@ if __name__ == '__main__':
             with open(librispeech_feat_loc + '/query.dev.embed_num') as f:
                 for line in f.readlines():
                     embed_num_list.append(int(line.rstrip()))
-            gen_std_embed_pkl(model, sess, std_batch, dev_query_iterator,
-                batch_dev_query, '{}/query.pkl'.format(std_dir), embed_num_list)
+            re_loss = gen_std_embed_pkl(model, sess, std_batch, 
+                dev_query_iterator,
+                batch_dev_query, '{}/query.pkl'.format(std_dir), 
+                embed_num_list)
+            print('reconstruction loss on query: {:.4f}'.format(re_loss))
 
             embed_num_list = []
             with open(librispeech_feat_loc + '/test.embed_num') as f:
                 for line in f.readlines():
                     embed_num_list.append(int(line.rstrip()))
 
-            gen_std_embed_pkl(model, sess, std_batch, test_iterator,
+            re_loss = gen_std_embed_pkl(model, sess, std_batch, test_iterator,
                 batch_test_data, '{}/doc.pkl'.format(std_dir), embed_num_list)
+            print('reconstruction loss on doc: {:.4f}'.format(re_loss))
             subprocess.Popen('utils/std_dev_eval.py {} {}'.format(std_dir, librispeech_std_dev_ans), shell=True)
 
 
