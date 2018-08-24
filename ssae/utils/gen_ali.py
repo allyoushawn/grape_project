@@ -33,7 +33,7 @@ if __name__ == '__main__':
     len_file = sys.argv[3]
     op_file = sys.argv[4]
 
-    model_num = 2500
+    model_num = 5000
 
     print('=============================================================')
     print('                      Set up models                          ')
@@ -103,15 +103,11 @@ if __name__ == '__main__':
             input_X = X
             utt_mask = np.ones((len(X)))
 
-        seg_action = None
+        seg_action = np.zeros(input_X.shape[:-1])
         sample_num = 10
         for _ in range(sample_num):
             # Sample bnds
-            tmp = sample_bnds(input_X)
-            if seg_action == None:
-                seg_action = tmp
-            else:
-                seg_action += seg_action
+            seg_action += sample_bnds(input_X)
         seg_action = np.ceil(seg_action / sample_num - 0.2)
         seq_len_filter = np.ones_like(seg_action)
         [rnn_code] = model.get_tensor_val(['rnn_code'],
