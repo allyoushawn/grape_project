@@ -103,8 +103,16 @@ if __name__ == '__main__':
             input_X = X
             utt_mask = np.ones((len(X)))
 
-        # Sample bnds
-        seg_action = sample_bnds(input_X)
+        seg_action = None
+        sample_num = 10
+        for _ in range(sample_num):
+            # Sample bnds
+            tmp = sample_bnds(input_X)
+            if seg_action == None:
+                seg_action = tmp
+            else:
+                seg_action += seg_action
+        seg_action = np.ceil(seg_action / sample_num - 0.2)
         seq_len_filter = np.ones_like(seg_action)
         [rnn_code] = model.get_tensor_val(['rnn_code'],
                       input_X, input_X, seg_action, utt_mask, seq_len_filter)

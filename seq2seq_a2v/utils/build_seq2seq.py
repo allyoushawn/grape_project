@@ -17,7 +17,7 @@ def gen_rnn_cell(rnn_cell_num, rnn_type, dropout_keep_prob):
 
     cell = tf.contrib.rnn.GRUCell(rnn_cell_num, activation=tf.nn.relu)
     #cell = tf.contrib.rnn.LayerNormBasicLSTMCell(rnn_cell_num, activation=tf.nn.relu)
-    #cell = tf.contrib.rnn.DropoutWrapper(cell, dropout_keep_prob)
+    cell = tf.contrib.rnn.DropoutWrapper(cell, dropout_keep_prob)
     return cell
 
 

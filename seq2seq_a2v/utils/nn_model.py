@@ -193,7 +193,7 @@ class SegSeq2SeqAutoEncoder(object):
         self.sess.run(self.seq2seq_train_step,
                  feed_dict={self.x: x, self.y_: y_,
                  self.utt_mask: utt_mask,
-                 self.dropout_keep_prob: 1.0})
+                 self.dropout_keep_prob: 0.5})
 
 
 

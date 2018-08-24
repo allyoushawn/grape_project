@@ -1,7 +1,7 @@
 #!/bin/bash
 
 
-dir="/home/allyoushawn/exps/journal_exps/ssae_ali_seq2seq"
+dir="/home/allyoushawn/exps/journal_exps/ssae_ali_seq2seq_dropout"
 #dir="/home/allyoushawn/exps/journal_exps/oracle_seq2seq_2"
 
 echo $dir

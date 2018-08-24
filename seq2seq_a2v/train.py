@@ -166,7 +166,7 @@ if __name__ == '__main__':
             #utt_mask = np.ones((len(X)))
             # Filter out too short len wrd
             utt_mask = np.sign(np.maximum(40, np.sum(np.sign(np.max(np.abs(X), axis=2)), axis=1)) - 40)
-            #utt_mask += 0.1
+            utt_mask += 0.1
             noise = np.random.rand(*(X.shape))
             noised_X = X * np.ceil( noise - noise_prob)
             model.train_seq2seq(noised_X, X, utt_mask)
